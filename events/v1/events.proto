@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package fm.events.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/thisissoon-fm/proto.go/events/v1;events";
+
+message PlayerPlay {
+  google.protobuf.Timestamp timestamp = 1;
+
+  string queueId = 2;
+
+  string provider = 3;
+
+  string trackId = 4;
+
+  string userId = 5;
+}

@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package fm.queue.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "providers/v1/providers.proto";
+
+option go_package = "github.com/thisissoon-fm/proto.go/queue/v1;queue";
+
+service QueueManager {
+  // Put adds a new track to the queue
+  rpc Put(PutRequest) returns (PutResponse) {}
+
+  // Next returns the next track in the queue
+  rpc Next(google.protobuf.Empty) returns (NextResponse) {}
+
+  // Pop takes the first item in the queue, removing it
+  // from the queue and returning it
+  rpc Pop(google.protobuf.Empty) returns (PopResponse) {}
+
+  // Count returns the totoal number of items in the queue
+  rpc Count(google.protobuf.Empty) returns (CountResponse) {}
+
+  // Queue returns the current queue as a stream of queue items
+  rpc Queue(QueueRequest) returns (stream QueueItem) {}
+
+  // Delete removes a specific item from the queue
+  rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {}
+}
+
+// Request for [QueueManager.Put][fm.queue.v1.QueueManager.Put]
+message PutRequest {
+  // Stream provider, for example Spotify, Google etc
+  fm.providers.v1.Provider provider = 1;
+
+  // Provider track ID to add to the Queue
+  string trackId = 2;
+
+  // ID of the user
+  string userId = 3;
+}
+
+// Response for [QueueManager.Put][fm.queue.v1.QueueManager.Put]
+message PutResponse {
+  // The queue item created
+  QueueItem queueItem = 1;
+}
+
+// Response for [QueueManager.Pop][fm.queue.v1.QueueManager.Pop]
+message PopResponse {
+  // The queue item popped from the top of the queue
+  QueueItem queueItem = 1;
+}
+
+// Response for [QueueManager.Next][fm.queue.v1.QueueManager.Next]
+message NextResponse {
+  // The next item in the queue
+  QueueItem queueItem = 1;
+}
+
+// Response for [QueueManager.Count][fm.queue.v1.QueueManager.Count]
+message CountResponse {
+  // Total number of items in the queue
+  int64 count = 1;
+}
+
+// Request for [QueueManager.Queue][fm.queue.v1.QueueManager.Queue]
+message QueueRequest {
+  // Number of items to retrun
+  int64 limit = 1;
+
+  // Offset from 0 to return items from
+  int64 offset = 2;
+}
+
+// A QueueItem is an individual item in the playlist queue
+message QueueItem {
+  // UUIDv4 Id
+  string id = 1;
+
+  // Timestamp the queue item was added
+  google.protobuf.Timestamp created = 2;
+
+  // Provider track ID to add to the Queue
+  string trackId = 3;
+
+  // ID of the user
+  string userId = 4;
+}
+
+// Request for [QueueManager.Delete][fm.queue.v1.QueueManager.Delete]
+message DeleteRequest {
+  // Id of the queue item to delete
+  string id = 1;
+}

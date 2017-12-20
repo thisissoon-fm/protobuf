@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package fm.providers.v1;
+
+option go_package = "github.com/thisissoon-fm/proto.go/providers/v1;providers";
+
+enum Provider {
+  Spotify = 0;
+  GooglePlay = 1;
+  SoundCloud = 2;
+}
