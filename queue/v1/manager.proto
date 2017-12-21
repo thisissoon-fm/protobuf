@@ -23,7 +23,7 @@ service QueueManager {
   rpc Count(google.protobuf.Empty) returns (CountResponse) {}
 
   // Queue returns the current queue as a stream of queue items
-  rpc Queue(QueueRequest) returns (stream QueueItem) {}
+  rpc Queue(QueueRequest) returns (stream QueueTrack) {}
 
   // Delete removes a specific item from the queue
   rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {}
@@ -44,19 +44,19 @@ message PutRequest {
 // Response for [QueueManager.Put][fm.queue.v1.QueueManager.Put]
 message PutResponse {
   // The queue item created
-  QueueItem queueItem = 1;
+  QueueTrack queueItem = 1;
 }
 
 // Response for [QueueManager.Pop][fm.queue.v1.QueueManager.Pop]
 message PopResponse {
   // The queue item popped from the top of the queue
-  QueueItem queueItem = 1;
+  QueueTrack queueItem = 1;
 }
 
 // Response for [QueueManager.Next][fm.queue.v1.QueueManager.Next]
 message NextResponse {
   // The next item in the queue
-  QueueItem queueItem = 1;
+  QueueTrack queueItem = 1;
 }
 
 // Response for [QueueManager.Count][fm.queue.v1.QueueManager.Count]
@@ -74,8 +74,8 @@ message QueueRequest {
   int64 offset = 2;
 }
 
-// A QueueItem is an individual item in the playlist queue
-message QueueItem {
+// A QueueTrack is an individual item in the playlist queue
+message QueueTrack {
   // UUIDv4 Id
   string id = 1;
 
